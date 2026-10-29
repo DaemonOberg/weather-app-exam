@@ -1,2 +1,5 @@
+valid_cities = ["Stockholm", "Göteborg", "Malmö", "Umeå", "Kiruna"]
+
+
 def is_valid_city(city):
-    return True
+    return city in valid_cities
