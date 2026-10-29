@@ -1,1 +1,10 @@
+# Virtual environment
 .venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Testing and linting cache
+.pytest_cache/
+.ruff_cache/
