@@ -1,12 +1,12 @@
 import requests
 
-
+CITY_COORDINATES = {
+    "Stockholm": (59.33, 18.07),
+    "Kiruna": (67.86, 20.23),
+}
 def get_weather(city):
-    coordinates = {
-        "Stockholm": (59.33, 18.07),
-        "Kiruna": (67.86, 20.23),
-    }
-    latitude, longitude = coordinates[city]
+    
+    latitude, longitude = CITY_COORDINATES[city]
     params = {
         "latitude": latitude,
         "longitude": longitude,
