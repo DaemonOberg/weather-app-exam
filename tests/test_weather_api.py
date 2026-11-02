@@ -18,3 +18,9 @@ def test_get_weather_timeout():
         mock_get.side_effect = requests.exceptions.Timeout
         with pytest.raises(ValueError, match="Couldn't get weather data"):
             get_weather("Stockholm")
+
+def test_get_weather_http_error():
+    with patch("weather_api.requests.get") as mock_get:
+        mock_get.return_value.raise_for_status.side_effect = requests.HTTPError
+        with pytest.raises(ValueError, match="Couldn't get weather data"):
+            get_weather("Stockholm")
