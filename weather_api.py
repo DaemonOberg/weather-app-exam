@@ -16,6 +16,6 @@ def get_weather(city):
     )
         response.raise_for_status()
         return response.json()
-    except requests.RequestException:
-        raise ValueError("Couldn't get weather data")
+    except requests.RequestException as exc:
+        raise ValueError("Couldn't get weather data") from exc
 
