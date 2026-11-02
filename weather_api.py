@@ -2,9 +2,14 @@ import requests
 
 
 def get_weather(city):
+    coordinates = {
+        "Stockholm": (59.33, 18.07),
+        "Kiruna": (67.86, 20.23),
+    }
+    latitude, longitude = coordinates[city]
     params = {
-        "latitude": 59.33,
-        "longitude": 18.07,
+        "latitude": latitude,
+        "longitude": longitude,
         "current": "temperature_2m,wind_speed_10m",
         "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
         "forecast_days": 3,
