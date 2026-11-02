@@ -10,9 +10,12 @@ def get_weather(city):
         "forecast_days": 3,
         "timezone": "auto",
     }
-
-    response = requests.get(
-        "https://api.open-meteo.com/v1/forecast", params=params, timeout=5
+    try:
+        response = requests.get(
+            "https://api.open-meteo.com/v1/forecast", params=params, timeout=5
     )
-    response.raise_for_status()
-    return response.json()
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException:
+        raise ValueError("Couldn't get weather data")
+
