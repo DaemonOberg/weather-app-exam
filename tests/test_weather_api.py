@@ -24,3 +24,9 @@ def test_get_weather_http_error():
         mock_get.return_value.raise_for_status.side_effect = requests.HTTPError
         with pytest.raises(ValueError, match="Couldn't get weather data"):
             get_weather("Stockholm")
+
+def test_get_weather_kiruna_coordinates():
+    with patch("weather_api.requests.get") as mock_get:
+        get_weather("Kiruna")
+        params = mock_get.call_args.kwargs["params"]
+        assert params["latitude"] == 67.86
