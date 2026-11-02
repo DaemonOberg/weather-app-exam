@@ -30,3 +30,9 @@ def test_get_weather_kiruna_coordinates():
         get_weather("Kiruna")
         params = mock_get.call_args.kwargs["params"]
         assert params["latitude"] == 67.86
+
+def test_get_weather_gothenburg_coordinates():
+    with patch("weather_api.requests.get") as mock_get:
+        get_weather("Göteborg")
+        params = mock_get.call_args.kwargs["params"]
+        assert params["latitude"] == 57.71
