@@ -27,30 +27,19 @@ def test_get_weather_http_error():
             get_weather("Stockholm")
 
 
-def test_get_weather_kiruna_coordinates():
+@pytest.mark.parametrize(
+    "city, latitude, longitude",
+    [
+        ("Stockholm", 59.33, 18.07),
+        ("Kiruna", 67.86, 20.23),
+        ("Göteborg", 57.71, 11.97),
+        ("Malmö", 55.61, 13.00),
+        ("Umeå", 63.83, 20.26),
+    ],
+)
+def test_city_coordinates(city, latitude, longitude):
     with patch("weather_api.requests.get") as mock_get:
-        get_weather("Kiruna")
+        get_weather(city)
         params = mock_get.call_args.kwargs["params"]
-        assert params["latitude"] == 67.86
-
-
-def test_get_weather_gothenburg_coordinates():
-    with patch("weather_api.requests.get") as mock_get:
-        get_weather("Göteborg")
-        params = mock_get.call_args.kwargs["params"]
-        assert params["latitude"] == 57.71
-
-
-def test_get_weather_malmo_coordinates():
-    with patch("weather_api.requests.get") as mock_get:
-        get_weather("Malmö")
-        params = mock_get.call_args.kwargs["params"]
-        assert params["latitude"] == 55.61
-
-
-def test_get_weather_umea_coordinates():
-    with patch("weather_api.requests.get") as mock_get:
-        get_weather("Umeå")
-        params = mock_get.call_args.kwargs["params"]
-        assert params["latitude"] == 63.83
-        assert params["longitude"] == 20.26
+        assert params["latitude"] == latitude
+        assert params["longitude"] == longitude
