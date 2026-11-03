@@ -53,3 +53,4 @@ def test_get_weather_umea_coordinates():
         get_weather("Umeå")
         params = mock_get.call_args.kwargs["params"]
         assert params["latitude"] == 63.83
+        assert params["longitude"] == 20.26
