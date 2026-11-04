@@ -39,6 +39,7 @@ def test_get_weather_http_error():
 )
 def test_city_coordinates(city, latitude, longitude):
     with patch("weather_api.requests.get") as mock_get:
+        mock_get.return_value.json.return_value = {"current": {"temperature_2m": 15.5}}
         get_weather(city)
         params = mock_get.call_args.kwargs["params"]
         assert params["latitude"] == latitude

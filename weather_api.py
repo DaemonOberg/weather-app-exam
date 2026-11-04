@@ -25,6 +25,12 @@ def get_weather(city):
             "https://api.open-meteo.com/v1/forecast", params=params, timeout=5
         )
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+
+        if not data or data.get("current", {}).get("temperature_2m") is None:
+            raise ValueError("Invalid weather data")
+
+        return data
+
     except requests.RequestException as exc:
         raise ValueError("Couldn't get weather data") from exc
