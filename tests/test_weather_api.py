@@ -43,3 +43,19 @@ def test_city_coordinates(city, latitude, longitude):
         params = mock_get.call_args.kwargs["params"]
         assert params["latitude"] == latitude
         assert params["longitude"] == longitude
+
+
+def test_get_weather_empty_response():
+    with patch("weather_api.requests.get") as mock_get:
+        mock_get.return_value.json.return_value = {}
+
+        with pytest.raises(ValueError, match="Invalid weather data"):
+            get_weather("Stockholm")
+
+
+def test_get_weather_incomplete_response():
+    with patch("weather_api.requests.get") as mock_get:
+        mock_get.return_value.json.return_value = {"current": {}}
+
+        with pytest.raises(ValueError, match="Invalid weather data"):
+            get_weather("Stockholm")
