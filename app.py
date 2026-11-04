@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -7,6 +7,10 @@ app = Flask(__name__)
 def index():
     return "Welcome to my weather app!"
 
+
 @app.route("/weather")
 def results():
-    return "Weather forecast"
+    city = request.args.get("city")
+    if city is None:
+        return "Weather forecast"
+    return city
