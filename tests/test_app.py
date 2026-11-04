@@ -36,7 +36,7 @@ def test_weather_invalid_city(client):
 def test_weather_uses_api(client):
     with patch("app.get_weather") as mock_get_weather:
         mock_get_weather.return_value = {"current": {"temperature_2m": 15.5}}
-        mock_get_weather.assert_called_once_with("Stockholm")
         response = client.get("/weather?city=Stockholm")
         assert response.status_code == 200
         assert b"Stockholm" in response.data
+        mock_get_weather.assert_called_once_with("Stockholm")
