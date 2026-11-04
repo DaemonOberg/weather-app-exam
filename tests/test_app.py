@@ -39,6 +39,7 @@ def test_weather_uses_api(client):
         client.get("/weather?city=Stockholm")
         mock_get_weather.assert_called_once_with("Stockholm")
 
+
 def test_weather_api_error(client):
     with patch("app.get_weather") as mock_get_weather:
         mock_get_weather.side_effect = ValueError("Couldn't get weather data")
