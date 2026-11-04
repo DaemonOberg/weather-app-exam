@@ -22,9 +22,13 @@ def test_weather_route(client):
 
 
 def test_weather_valid_city(client):
-    response = client.get("/weather?city=Stockholm")
-    assert response.status_code == 200
-    assert b"Stockholm" in response.data
+    with patch("app.get_weather") as mock_get_weather:
+        mock_get_weather.return_value = {"current": {"temperature_2m": 15.5}}
+
+        response = client.get("/weather?city=Stockholm")
+
+        assert response.status_code == 200
+        assert b"Stockholm" in response.data
 
 
 def test_weather_invalid_city(client):
