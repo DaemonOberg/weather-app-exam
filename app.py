@@ -1,6 +1,7 @@
 from flask import Flask, request
 
 from cities import is_valid_city
+from weather_api import get_weather
 
 app = Flask(__name__)
 
@@ -17,4 +18,5 @@ def results():
         return "Weather forecast"
     if not is_valid_city(city):
         return f"Invalid city: {city}", 400
-    return city
+    weather = get_weather(city)
+    return f"{city}: {weather['current']['temperature_2m']} °C"
