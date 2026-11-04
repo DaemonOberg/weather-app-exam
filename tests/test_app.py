@@ -23,3 +23,8 @@ def test_weather_valid_city(client):
     response = client.get("/weather?city=Stockholm")
     assert response.status_code == 200
     assert b"Stockholm" in response.data
+
+def test_weather_invalid_city(client):
+    response = client.get("/weather?city=London")
+    assert response.status_code == 400
+    assert b"London" in response.data
