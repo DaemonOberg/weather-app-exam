@@ -38,3 +38,12 @@ def test_weather_uses_api(client):
         mock_get_weather.return_value = {"current": {"temperature_2m": 15.5}}
         client.get("/weather?city=Stockholm")
         mock_get_weather.assert_called_once_with("Stockholm")
+
+def test_weather_api_error(client):
+    with patch("app.get_weather") as mock_get_weather:
+        mock_get_weather.side_effect = ValueError("Couldn't get weather data")
+
+        response = client.get("/weather?city=Stockholm")
+
+        assert response.status_code == 503
+        assert b"Weather data is temporarily unavailable" in response.data
