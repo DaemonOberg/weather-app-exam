@@ -29,6 +29,8 @@ def get_weather(city):
 
         if not data or data.get("current", {}).get("temperature_2m") is None:
             raise ValueError("Invalid weather data")
+        if not data or data.get("current", {}).get("wind_speed_10m") is None:
+            raise ValueError("Invalid weather data")
         if not data.get("daily", {}).get("temperature_2m_max"):
             raise ValueError("Invalid weather data")
         if not data.get("daily", {}).get("temperature_2m_min"):
