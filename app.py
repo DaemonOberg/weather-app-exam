@@ -6,6 +6,11 @@ from weather_api import get_weather
 app = Flask(__name__)
 
 
+@app.template_filter("format_temperature")
+def format_temperature(value):
+    return str(round(value, 1)).replace(".", ",")
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
