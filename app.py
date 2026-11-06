@@ -23,6 +23,6 @@ def results():
 
     try:
         weather = get_weather(city)
-        return f"{city}: {weather['current']['temperature_2m']} °C"
+        return render_template("weather.html", city=city, weather=weather)
     except ValueError:
         return "Weather data is temporarily unavailable", 503

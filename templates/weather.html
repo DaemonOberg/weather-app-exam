@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Weather in {{city}}</h1>
+    <p>Temperature: {{ weather.current.temperature_2m }} °C</p>
+    <p>Wind speed: {{ weather.current.wind_speed_10m }} km/h</p>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Max °C</th>
+            <th>Min °C</th>
+            <th>Rain (mm)</th>
+        </tr>
+        {% for i in range(3) %}
+        <tr>
+            <td>{{ weather.daily.time[i] }}</td>
+            <td>{{ weather.daily.temperature_2m_max[i] }}</td>
+            <td>{{ weather.daily.temperature_2m_min[i] }}</td>
+            <td>{{ weather.daily.precipitation_sum[i] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
