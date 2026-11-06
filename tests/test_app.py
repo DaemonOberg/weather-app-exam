@@ -13,7 +13,7 @@ def client():
 def test_index(client):
     response = client.get("/")
     assert response.status_code == 200
-    assert b"Welcome to my weather app!" in response.data
+    assert b"Weather Forecast" in response.data
 
 
 def test_weather_route(client):
