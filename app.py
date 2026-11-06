@@ -26,3 +26,13 @@ def results():
         return render_template("weather.html", city=city, weather=weather)
     except ValueError:
         return "Weather data is temporarily unavailable", 503
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+
+@app.route("/info")
+def info():
+    return render_template("info.html")

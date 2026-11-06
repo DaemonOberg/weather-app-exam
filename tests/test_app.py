@@ -61,3 +61,9 @@ def test_weather_api_error(client):
 
         assert response.status_code == 503
         assert b"Weather data is temporarily unavailable" in response.data
+
+
+def test_404_page(client):
+    response = client.get("/nonexistent")
+    assert response.status_code == 404
+    assert b"404 - Page Not Found" in response.data

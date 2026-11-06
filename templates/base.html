@@ -5,6 +5,13 @@
         <meta name="description" content="Current weather information and forecasts.">
     </head>
     <body>
+         <nav class="navbar">
+            <span class="navbar-brand">Weather App</span>
+            <div class="navbar-links">
+                <a href="{{ url_for('info') }}">Info</a>
+                <a href="{{ url_for('index') }}">Home</a>
+            </div>
+        </nav>
 {% block content %}{% endblock %}      
     </body>
 </html>
