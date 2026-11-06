@@ -92,3 +92,19 @@ def test_get_weather_too_few_days():
 
         with pytest.raises(ValueError, match="Not enough forecast data"):
             get_weather("Stockholm")
+
+
+def test_get_weather_missing_wind_speed():
+    with patch("weather_api.requests.get") as mock_get:
+        mock_get.return_value.json.return_value = {
+            "current": {"temperature_2m": 15.5},
+            "daily": {
+                "time": ["2026-11-06", "2026-11-07", "2026-11-08"],
+                "temperature_2m_max": [10.0, 11.0, 12.0],
+                "temperature_2m_min": [2.0, 3.0, 4.0],
+                "precipitation_sum": [0.0, 1.0, 2.0],
+            },
+        }
+
+        with pytest.raises(ValueError, match="Invalid weather data"):
+            get_weather("Stockholm")
