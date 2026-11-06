@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, render_template, request
 
 from cities import is_valid_city
 from weather_api import get_weather
@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return "Welcome to my weather app!"
+    return render_template("index.html")
 
 
 @app.route("/weather")

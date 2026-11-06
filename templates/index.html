@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+    <h1>Welcome to Weather App</h1>
+    <p>
+       Check current conditions and the next three days of weather across Sweden.
+    </p>
+</header>
+<form action="{{ url_for('results') }}">
+    <select name="city">
+        <option>Stockholm</option>
+        <option>Göteborg</option>
+        <option>Malmö</option>
+        <option>Umeå</option>
+        <option>Kiruna</option>
+    </select>
+    <button type="submit">View Forecast</button>
+</form>
+{% endblock %}
