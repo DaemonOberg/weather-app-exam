@@ -8,7 +8,15 @@ from weather_api import get_weather
 
 def test_get_weather():
     with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = {"current": {"temperature_2m": 15.5}}
+        mock_get.return_value.json.return_value = {
+            "current": {"temperature_2m": 15.5},
+            "daily": {
+                "time": ["2026-11-06", "2026-11-07", "2026-11-08"],
+                "temperature_2m_max": [10.0, 11.0, 12.0],
+                "temperature_2m_min": [2.0, 3.0, 4.0],
+                "precipitation_sum": [0.0, 1.0, 2.0],
+            },
+        }
         result = get_weather("Stockholm")
         assert result["current"]["temperature_2m"] == 15.5
 
@@ -39,7 +47,15 @@ def test_get_weather_http_error():
 )
 def test_city_coordinates(city, latitude, longitude):
     with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = {"current": {"temperature_2m": 15.5}}
+        mock_get.return_value.json.return_value = {
+            "current": {"temperature_2m": 15.5},
+            "daily": {
+                "time": ["2026-11-06", "2026-11-07", "2026-11-08"],
+                "temperature_2m_max": [10.0, 11.0, 12.0],
+                "temperature_2m_min": [2.0, 3.0, 4.0],
+                "precipitation_sum": [0.0, 1.0, 2.0],
+            },
+        }
         get_weather(city)
         params = mock_get.call_args.kwargs["params"]
         assert params["latitude"] == latitude

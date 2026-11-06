@@ -29,7 +29,20 @@ def get_weather(city):
 
         if not data or data.get("current", {}).get("temperature_2m") is None:
             raise ValueError("Invalid weather data")
-
+        if not data.get("daily", {}).get("temperature_2m_max"):
+            raise ValueError("Invalid weather data")
+        if not data.get("daily", {}).get("temperature_2m_min"):
+            raise ValueError("Invalid weather data")
+        if not data.get("daily", {}).get("precipitation_sum"):
+            raise ValueError("Invalid weather data")
+        if len(data.get("daily", {}).get("temperature_2m_max", [])) < 3:
+            raise ValueError("Not enough forecast data")
+        if len(data.get("daily", {}).get("temperature_2m_min", [])) < 3:
+            raise ValueError("Not enough forecast data")
+        if len(data.get("daily", {}).get("precipitation_sum", [])) < 3:
+            raise ValueError("Not enough forecast data")
+        if len(data.get("daily", {}).get("time", [])) < 3:
+            raise ValueError("Not enough forecast data")
         return data
 
     except requests.RequestException as exc:
