@@ -40,7 +40,7 @@ def get_weather(city):
         if not isinstance(daily, dict):
             raise ValueError("Invalid weather data")  # noqa: TRY004
 
-        if current.get("temperature_2m") is None:
+        if not isinstance(current.get("temperature_2m"), (int, float)):
             raise ValueError("Invalid weather data")
 
         if current.get("wind_speed_10m") is None:
