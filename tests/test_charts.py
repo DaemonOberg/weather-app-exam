@@ -18,3 +18,10 @@ def test_create_temperature_chart_returns_html(weather_data):
     chart_html = create_temperature_chart(weather_data)
 
     assert isinstance(chart_html, str)
+
+
+def test_create_temperature_chart_contains_both_lines(weather_data):
+    chart_html = create_temperature_chart(weather_data)
+
+    assert "Max temperature" in chart_html
+    assert "Min temperature" in chart_html
