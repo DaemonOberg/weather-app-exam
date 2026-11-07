@@ -23,18 +23,22 @@ def results():
     if city is None:
         return "Weather forecast"
 
+    if not city.strip():
+        return "Please select a city", 400
+
     if not is_valid_city(city):
         return f"Invalid city: {city}", 400
 
     try:
         weather = get_weather(city)
-        return render_template("weather.html", city=city, weather=weather)
     except ValueError:
         return "Weather data is temporarily unavailable", 503
 
+    return render_template("weather.html", city=city, weather=weather)
+
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found(error):
     return render_template("404.html"), 404
 
 
