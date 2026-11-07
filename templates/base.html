@@ -1,17 +1,38 @@
+
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Weather App</title>
-        <meta name="description" content="Current weather information and forecasts.">
-    </head>
-    <body>
-         <nav class="navbar">
-            <span class="navbar-brand">Weather App</span>
-            <div class="navbar-links">
-                <a href="{{ url_for('info') }}">Info</a>
-                <a href="{{ url_for('index') }}">Home</a>
-            </div>
-        </nav>
-{% block content %}{% endblock %}      
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Explore current weather conditions and three-day forecasts across Sweden."
+    >
+    <title>{% block title %}Weather App{% endblock %}</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+<body>
+    <div class="site-wrapper">
+        <header class="site-header">
+            <nav class="navbar" aria-label="Main navigation">
+                <a class="navbar-brand" href="{{ url_for('index') }}">
+                    <span class="brand-icon" aria-hidden="true">☀</span>
+                    <span>Weather App</span>
+                </a>
+
+                <div class="navbar-links">
+                    <a href="{{ url_for('info') }}">Info</a>
+                    <a href="{{ url_for('index') }}">Home</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
 </html>

@@ -1,25 +1,54 @@
+
 {% extends "base.html" %}
 
+{% block title %}Weather in {{ city }} | Weather App{% endblock %}
+
 {% block content %}
-    <h1>Weather in {{city}}</h1>
+<section class="weather-results">
+    <header class="weather-results-header">
+        <h1>Weather in {{ city }}</h1>
+        <p>Current conditions and a three-day forecast.</p>
+    </header>
+
     {% if weather %}
-    <p>Temperature: {{ weather.current.temperature_2m | format_temperature }} °C</p>
-    <p>Wind speed: {{ weather.current.wind_speed_10m }} km/h</p>
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Max °C</th>
-            <th>Min °C</th>
-            <th>Rain (mm)</th>
-        </tr>
-        {% for i in range(3) %}
-        <tr>
-            <td>{{ weather.daily.time[i] }}</td>
-            <td>{{ weather.daily.temperature_2m_max[i] | format_temperature }}</td>
-            <td>{{ weather.daily.temperature_2m_min[i] | format_temperature }}</td>
-            <td>{{ weather.daily.precipitation_sum[i] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <section class="current-weather" aria-label="Current weather">
+        <h2>Current Weather</h2>
+        <p>
+            Temperature:
+            {{ weather.current.temperature_2m | format_temperature }} °C
+        </p>
+        <p>
+            Wind speed:
+            {{ weather.current.wind_speed_10m }} km/h
+        </p>
+    </section>
+
+    <section class="weather-forecast" aria-labelledby="forecast-heading">
+        <h2 id="forecast-heading">Three-Day Forecast</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Max °C</th>
+                        <th scope="col">Min °C</th>
+                        <th scope="col">Rain (mm)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(3) %}
+                    <tr>
+                        <td>{{ weather.daily.time[i] }}</td>
+                        <td>{{ weather.daily.temperature_2m_max[i] | format_temperature }}</td>
+                        <td>{{ weather.daily.temperature_2m_min[i] | format_temperature }}</td>
+                        <td>{{ weather.daily.precipitation_sum[i] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
     {% endif %}
+</section>
 {% endblock %}

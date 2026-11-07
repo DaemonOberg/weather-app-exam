@@ -1,20 +1,29 @@
+
 {% extends "base.html" %}
 
+{% block title %}Weather Forecast | Weather App{% endblock %}
+
 {% block content %}
-<header>
-    <h1>Weather Forecast</h1>
-    <p>
-       Check current conditions and the next three days of weather across Sweden.
-    </p>
-</header>
-<form action="{{ url_for('results') }}">
-    <select name="city">
-        <option>Stockholm</option>
-        <option>Göteborg</option>
-        <option>Malmö</option>
-        <option>Umeå</option>
-        <option>Kiruna</option>
-    </select>
-    <button type="submit">View Forecast</button>
-</form>
+<section class="weather-search">
+    <header class="weather-search-header">
+        <h1>Weather Forecast</h1>
+        <p>
+            Check current conditions and the next three days of weather across Sweden.
+        </p>
+    </header>
+
+    <form action="{{ url_for('results') }}" method="get" class="weather-form">
+        <select id="city" name="city" aria-label="Choose a city" required>
+            <option value="" selected disabled>Select a city</option>
+            <option value="Stockholm">Stockholm</option>
+            <option value="Göteborg">Göteborg</option>
+            <option value="Malmö">Malmö</option>
+            <option value="Umeå">Umeå</option>
+            <option value="Kiruna">Kiruna</option>
+        </select>
+
+        <button type="submit">View Forecast</button>
+    </form>
+</section>
 {% endblock %}
+

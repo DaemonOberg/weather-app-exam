@@ -1,4 +1,38 @@
+
 {% extends "base.html" %}
 
+{% block title %}About | Weather App{% endblock %}
+
 {% block content %}
+<section class="info-page">
+    <header class="info-header">
+        <h1>About Weather App</h1>
+        <p>
+            Weather App provides current weather conditions and
+            three-day forecasts for selected cities in Sweden.
+        </p>
+    </header>
+
+    <section class="info-section">
+        <h2>How It Works</h2>
+        <p>
+            Select a city on the home page to view its current
+            temperature, wind speed, and a three-day forecast
+            with maximum temperatures, minimum temperatures,
+            and precipitation.
+        </p>
+    </section>
+
+    <section class="info-section">
+        <h2>Weather Data</h2>
+        <p>
+            Weather information is provided by
+            <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">
+                Open-Meteo
+            </a>.
+            Weather data is made available under the
+            Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+        </p>
+    </section>
+</section>
 {% endblock %}

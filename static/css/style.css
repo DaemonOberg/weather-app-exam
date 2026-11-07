@@ -1,0 +1,369 @@
+
+/* ========================================
+   1. GLOBAL STYLES
+   Colors, typography and page layout
+======================================== */
+
+:root {
+    --color-background: #F7F3ED;
+    --color-surface: #FFFFFF;
+    --color-beige: #E8DCCB;
+    --color-brown: #8B6F56;
+    --color-dark-brown: #49382E;
+    --color-text: #49382E;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.site-wrapper {
+    min-height: 100vh;
+}
+
+.main-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 24px;
+}
+
+
+/* ========================================
+   2. NAVIGATION BAR
+   Navigation shared by all pages
+======================================== */
+
+.site-header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-beige);
+}
+
+.navbar {
+    max-width: none;
+    margin: 0 auto;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-dark-brown);
+    font-size: 22px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.brand-icon {
+    color: var(--color-brown);
+    font-size: 28px;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.navbar-links a {
+    color: var(--color-dark-brown);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.navbar-links a:hover {
+    color: var(--color-brown);
+}
+
+.navbar a:focus-visible {
+    outline: 2px solid var(--color-brown);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+
+/* ========================================
+   3. HOME PAGE
+   Weather search form and button
+======================================== */
+
+.weather-search {
+    max-width: 650px;
+    margin: 40px auto;
+    padding: 48px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-beige);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(73, 56, 46, 0.06);
+}
+
+.weather-search-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.weather-search-header h1 {
+    margin: 0 0 12px;
+    color: var(--color-dark-brown);
+    font-size: 36px;
+}
+
+.weather-search-header p {
+    margin: 0;
+    color: var(--color-brown);
+}
+
+/* Weather search form */
+
+.weather-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.weather-form select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--color-beige);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-dark-brown);
+    font: inherit;
+    cursor: pointer;
+}
+
+.weather-form button {
+    margin-top: 12px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-dark-brown);
+    color: white;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.weather-form button:hover {
+    background-color: var(--color-brown);
+}
+
+.weather-form select:focus-visible,
+.weather-form button:focus-visible {
+    outline: 2px solid var(--color-brown);
+    outline-offset: 3px;
+}
+
+
+/* ========================================
+   4. WEATHER RESULTS PAGE
+   Current weather and three-day forecast
+======================================== */
+
+.weather-results {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.weather-results-header {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.weather-results-header h1 {
+    margin: 0 0 12px;
+    color: var(--color-dark-brown);
+    font-size: 36px;
+}
+
+.weather-results-header p {
+    margin: 0;
+    color: var(--color-brown);
+}
+
+/* Current weather card */
+
+.current-weather {
+    padding: 32px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-beige);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(73, 56, 46, 0.06);
+}
+
+.current-weather h2 {
+    margin: 0 0 20px;
+    color: var(--color-dark-brown);
+    font-size: 24px;
+}
+
+.current-weather p {
+    margin: 8px 0;
+    font-size: 18px;
+}
+
+/* Three-day forecast */
+
+.weather-forecast {
+    margin-top: 32px;
+    padding: 32px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-beige);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(73, 56, 46, 0.06);
+}
+
+.weather-forecast h2 {
+    margin: 0 0 24px;
+    color: var(--color-dark-brown);
+    font-size: 24px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.weather-forecast table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.weather-forecast th,
+.weather-forecast td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--color-beige);
+}
+
+.weather-forecast th {
+    background-color: var(--color-beige);
+    color: var(--color-dark-brown);
+    font-weight: bold;
+}
+
+.weather-forecast tbody tr:hover {
+    background-color: var(--color-background);
+}
+
+.weather-forecast tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ========================================
+   5. INFORMATION PAGE
+   Information about the app and data source
+======================================== */
+
+.info-page {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.info-header {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.info-header h1 {
+    margin: 0 0 12px;
+    color: var(--color-dark-brown);
+    font-size: 36px;
+}
+
+.info-header p {
+    margin: 0;
+    color: var(--color-brown);
+}
+
+.info-section {
+    margin-bottom: 24px;
+    padding: 32px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-beige);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(73, 56, 46, 0.06);
+}
+
+.info-section h2 {
+    margin: 0 0 16px;
+    color: var(--color-dark-brown);
+    font-size: 24px;
+}
+
+.info-section p {
+    margin: 0;
+}
+
+.info-section a {
+    color: var(--color-brown);
+    font-weight: bold;
+    text-underline-offset: 3px;
+}
+
+.info-section a:hover {
+    color: var(--color-dark-brown);
+}
+
+
+/* ========================================
+   6. ERROR PAGE
+   Custom 404 error page
+======================================== */
+
+.error-page {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 48px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-beige);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(73, 56, 46, 0.06);
+    text-align: center;
+}
+
+.error-page h1 {
+    margin: 0 0 16px;
+    color: var(--color-dark-brown);
+    font-size: 36px;
+}
+
+.error-page p {
+    margin: 0 0 32px;
+    color: var(--color-brown);
+}
+
+.back-home {
+    display: inline-block;
+    padding: 14px 24px;
+    background-color: var(--color-dark-brown);
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.back-home:hover {
+    background-color: var(--color-brown);
+}
+
+.back-home:focus-visible {
+    outline: 2px solid var(--color-brown);
+    outline-offset: 3px;
+}
