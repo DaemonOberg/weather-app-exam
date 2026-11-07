@@ -26,7 +26,8 @@ def get_weather(city):
         )
         response.raise_for_status()
         data = response.json()
-
+        if not isinstance(data.get("current"), dict):
+            raise ValueError("Invalid weather data")  # noqa: TRY004
         if not data or data.get("current", {}).get("temperature_2m") is None:
             raise ValueError("Invalid weather data")
         if not data or data.get("current", {}).get("wind_speed_10m") is None:
