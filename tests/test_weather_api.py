@@ -127,3 +127,11 @@ def test_get_weather_response_none():
 
         with pytest.raises(ValueError, match="Invalid weather data"):
             get_weather("Stockholm")
+
+
+def test_get_weather_response_list():
+    with patch("weather_api.requests.get") as mock_get:
+        mock_get.return_value.json.return_value = []
+
+        with pytest.raises(ValueError, match="Invalid weather data"):
+            get_weather("Stockholm")
