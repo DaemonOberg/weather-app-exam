@@ -55,7 +55,7 @@ def get_weather(city):
         for field in required_daily_fields:
             values = daily.get(field)
 
-            if not values:
+            if not isinstance(values, list) or not values:
                 raise ValueError("Invalid weather data")
 
             if len(values) < 3:
