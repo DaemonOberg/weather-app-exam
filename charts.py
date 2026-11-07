@@ -26,4 +26,9 @@ def create_temperature_chart(weather):
         )
     )
 
+    fig.update_xaxes(
+        tickformat="%Y-%m-%d",
+        dtick="D1",
+    )
+
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
