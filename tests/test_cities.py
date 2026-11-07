@@ -12,6 +12,9 @@ from cities import is_valid_city
         ("Umeå", True),
         ("Kiruna", True),
         ("London", False),
+        ("", False),
+        ("stockholm", False),
+        (" Stockholm ", False),
     ],
 )
 def test_city_validation(city, expected):
