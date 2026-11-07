@@ -64,7 +64,12 @@ def get_weather(city):
             if any(value is None for value in values[:3]):
                 raise ValueError("Invalid weather data")
 
-        if len(daily.get("time", [])) < 3:
+        time_values = daily.get("time")
+
+        if not isinstance(time_values, list):
+            raise ValueError("Invalid weather data")  # noqa: TRY004
+
+        if len(time_values) < 3:
             raise ValueError("Not enough forecast data")
 
         return data
