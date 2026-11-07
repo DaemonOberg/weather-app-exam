@@ -31,7 +31,8 @@ def test_index(client):
 
 def test_weather_route(client):
     response = client.get("/weather")
-    assert response.status_code == 200
+    assert response.status_code == 400
+    assert b"Please select a city" in response.data
 
 
 def test_weather_valid_city(client, weather_data):
