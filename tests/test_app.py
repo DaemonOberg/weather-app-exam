@@ -72,3 +72,10 @@ def test_404_page(client):
     response = client.get("/nonexistent")
     assert response.status_code == 404
     assert b"404 - Page Not Found" in response.data
+
+
+def test_weather_empty_city(client):
+    response = client.get("/weather?city=")
+
+    assert response.status_code == 400
+    assert b"Please select a city" in response.data
