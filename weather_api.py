@@ -60,7 +60,7 @@ def get_weather(city):
 
             if len(values) < 3:
                 raise ValueError("Not enough forecast data")
-            
+
             if any(value is None for value in values[:3]):
                 raise ValueError("Invalid weather data")
 
