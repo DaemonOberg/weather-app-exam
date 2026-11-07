@@ -10,6 +10,19 @@ def client():
     return app.test_client()
 
 
+@pytest.fixture
+def weather_data():
+    return {
+        "current": {"temperature_2m": 15.5, "wind_speed_10m": 0.0},
+        "daily": {
+            "time": ["2026-11-06", "2026-11-07", "2026-11-08"],
+            "temperature_2m_max": [10.0, 11.0, 12.0],
+            "temperature_2m_min": [2.0, 3.0, 4.0],
+            "precipitation_sum": [0.0, 1.0, 2.0],
+        },
+    }
+
+
 def test_index(client):
     response = client.get("/")
     assert response.status_code == 200
@@ -21,17 +34,9 @@ def test_weather_route(client):
     assert response.status_code == 200
 
 
-def test_weather_valid_city(client):
+def test_weather_valid_city(client, weather_data):
     with patch("app.get_weather") as mock_get_weather:
-        mock_get_weather.return_value = {
-            "current": {"temperature_2m": 15.5},
-            "daily": {
-                "time": ["2026-11-06", "2026-11-07", "2026-11-08"],
-                "temperature_2m_max": [8.5, 9.2, 7.8],
-                "temperature_2m_min": [2.1, 3.4, 1.8],
-                "precipitation_sum": [0.0, 1.5, 2.3],
-            },
-        }
+        mock_get_weather.return_value = weather_data
 
         response = client.get("/weather?city=Stockholm")
 
@@ -46,9 +51,9 @@ def test_weather_invalid_city(client):
     assert b"London" in response.data
 
 
-def test_weather_uses_api(client):
+def test_weather_uses_api(client, weather_data):
     with patch("app.get_weather") as mock_get_weather:
-        mock_get_weather.return_value = {"current": {"temperature_2m": 15.5}}
+        mock_get_weather.return_value = weather_data
         client.get("/weather?city=Stockholm")
         mock_get_weather.assert_called_once_with("Stockholm")
 
