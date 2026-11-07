@@ -79,3 +79,14 @@ def test_weather_empty_city(client):
 
     assert response.status_code == 400
     assert b"Please select a city" in response.data
+
+
+def test_weather_page_contains_chart(client, weather_data):
+    with patch("app.get_weather") as mock_get_weather:
+        mock_get_weather.return_value = weather_data
+
+        response = client.get("/weather?city=Stockholm")
+
+        assert response.status_code == 200
+        assert b"Max temperature" in response.data
+        assert b"Min temperature" in response.data
