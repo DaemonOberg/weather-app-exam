@@ -22,7 +22,7 @@ def results():
     city = request.args.get("city")
 
     if city is None:
-        return "Weather forecast"
+        return "Please select a city", 400
 
     if not city.strip():
         return "Please select a city", 400
