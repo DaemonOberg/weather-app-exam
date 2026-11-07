@@ -151,3 +151,11 @@ def test_get_weather_invalid_daily_type(weather_data, mock_get):
 
     with pytest.raises(ValueError, match="Invalid weather data"):
         get_weather("Stockholm")
+
+
+def test_get_weather_invalid_temperature_type(weather_data, mock_get):
+    weather_data["current"]["temperature_2m"] = "unknown"
+    mock_get.return_value.json.return_value = weather_data
+
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
