@@ -7,6 +7,10 @@ from cities import is_valid_city
     "city, expected",
     [
         ("Stockholm", True),
+        ("Göteborg", True),
+        ("Malmö", True),
+        ("Umeå", True),
+        ("Kiruna", True),
         ("London", False),
     ],
 )
