@@ -19,25 +19,32 @@ def weather_data():
     }
 
 
-def test_get_weather(weather_data):
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = weather_data
-        result = get_weather("Stockholm")
-        assert result["current"]["temperature_2m"] == 15.5
+@pytest.fixture
+def mock_get():
+    with patch("weather_api.requests.get") as mocked_get:
+        yield mocked_get
 
 
-def test_get_weather_timeout():
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.side_effect = requests.exceptions.Timeout
-        with pytest.raises(ValueError, match="Couldn't get weather data"):
-            get_weather("Stockholm")
+def test_get_weather_success(weather_data, mock_get):
+    mock_get.return_value.json.return_value = weather_data
+
+    result = get_weather("Stockholm")
+
+    assert result["current"]["temperature_2m"] == 15.5
 
 
-def test_get_weather_http_error():
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.raise_for_status.side_effect = requests.HTTPError
-        with pytest.raises(ValueError, match="Couldn't get weather data"):
-            get_weather("Stockholm")
+def test_get_weather_timeout(mock_get):
+    mock_get.side_effect = requests.exceptions.Timeout
+
+    with pytest.raises(ValueError, match="Couldn't get weather data"):
+        get_weather("Stockholm")
+
+
+def test_get_weather_http_error(mock_get):
+    mock_get.return_value.raise_for_status.side_effect = requests.HTTPError
+
+    with pytest.raises(ValueError, match="Couldn't get weather data"):
+        get_weather("Stockholm")
 
 
 @pytest.mark.parametrize(
@@ -50,88 +57,73 @@ def test_get_weather_http_error():
         ("Umeå", 63.83, 20.26),
     ],
 )
-def test_city_coordinates(city, latitude, longitude, weather_data):
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = weather_data
-        get_weather(city)
-        params = mock_get.call_args.kwargs["params"]
-        assert params["latitude"] == latitude
-        assert params["longitude"] == longitude
+def test_city_coordinates(city, latitude, longitude, weather_data, mock_get):
+    mock_get.return_value.json.return_value = weather_data
+
+    get_weather(city)
+
+    params = mock_get.call_args.kwargs["params"]
+    assert params["latitude"] == latitude
+    assert params["longitude"] == longitude
 
 
-def test_get_weather_empty_response():
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = {}
+def test_get_weather_empty_response(mock_get):
+    mock_get.return_value.json.return_value = {}
 
-        with pytest.raises(ValueError, match="Invalid weather data"):
-            get_weather("Stockholm")
-
-
-def test_get_weather_incomplete_response():
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = {"current": {}}
-
-        with pytest.raises(ValueError, match="Invalid weather data"):
-            get_weather("Stockholm")
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
 
 
-def test_get_weather_too_few_days(weather_data):
-    with patch("weather_api.requests.get") as mock_get:
-        weather_data["daily"]["time"] = weather_data["daily"]["time"][:2]
-        weather_data["daily"]["temperature_2m_max"] = weather_data["daily"][
-            "temperature_2m_max"
-        ][:2]
-        weather_data["daily"]["temperature_2m_min"] = weather_data["daily"][
-            "temperature_2m_min"
-        ][:2]
-        weather_data["daily"]["precipitation_sum"] = weather_data["daily"][
-            "precipitation_sum"
-        ][:2]
+def test_get_weather_incomplete_response(mock_get):
+    mock_get.return_value.json.return_value = {"current": {}}
 
-        mock_get.return_value.json.return_value = weather_data
-
-        with pytest.raises(ValueError, match="Not enough forecast data"):
-            get_weather("Stockholm")
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
 
 
-def test_get_weather_missing_wind_speed(weather_data):
-    with patch("weather_api.requests.get") as mock_get:
-        weather_data["current"].pop("wind_speed_10m")
-        mock_get.return_value.json.return_value = weather_data
+def test_get_weather_too_few_days(weather_data, mock_get):
+    for field in weather_data["daily"]:
+        weather_data["daily"][field] = weather_data["daily"][field][:2]
 
-        with pytest.raises(ValueError, match="Invalid weather data"):
-            get_weather("Stockholm")
+    mock_get.return_value.json.return_value = weather_data
+
+    with pytest.raises(ValueError, match="Not enough forecast data"):
+        get_weather("Stockholm")
 
 
-def test_get_weather_current_none(weather_data):
+def test_get_weather_missing_wind_speed(weather_data, mock_get):
+    weather_data["current"].pop("wind_speed_10m")
+    mock_get.return_value.json.return_value = weather_data
+
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
+
+
+def test_get_weather_current_none(weather_data, mock_get):
     weather_data["current"] = None
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = weather_data
+    mock_get.return_value.json.return_value = weather_data
 
-        with pytest.raises(ValueError, match="Invalid weather data"):
-            get_weather("Stockholm")
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
 
 
-def test_get_weather_daily_none(weather_data):
+def test_get_weather_daily_none(weather_data, mock_get):
     weather_data["daily"] = None
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = weather_data
+    mock_get.return_value.json.return_value = weather_data
 
-        with pytest.raises(ValueError, match="Invalid weather data"):
-            get_weather("Stockholm")
-
-
-def test_get_weather_response_none():
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = None
-
-        with pytest.raises(ValueError, match="Invalid weather data"):
-            get_weather("Stockholm")
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
 
 
-def test_get_weather_response_list():
-    with patch("weather_api.requests.get") as mock_get:
-        mock_get.return_value.json.return_value = []
+def test_get_weather_response_none(mock_get):
+    mock_get.return_value.json.return_value = None
 
-        with pytest.raises(ValueError, match="Invalid weather data"):
-            get_weather("Stockholm")
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
+
+
+def test_get_weather_response_list(mock_get):
+    mock_get.return_value.json.return_value = []
+
+    with pytest.raises(ValueError, match="Invalid weather data"):
+        get_weather("Stockholm")
