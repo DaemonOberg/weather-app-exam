@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 
+from charts import create_temperature_chart
 from cities import is_valid_city
 from weather_api import get_weather
 
@@ -34,7 +35,14 @@ def results():
     except ValueError:
         return "Weather data is temporarily unavailable", 503
 
-    return render_template("weather.html", city=city, weather=weather)
+    chart_html = create_temperature_chart(weather)
+
+    return render_template(
+        "weather.html",
+        city=city,
+        weather=weather,
+        chart_html=chart_html,
+    )
 
 
 @app.errorhandler(404)

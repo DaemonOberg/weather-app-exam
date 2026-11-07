@@ -49,6 +49,11 @@
             </table>
         </div>
     </section>
+
+    <section class="temperature-chart" aria-labelledby="chart-heading">
+        <h2 id="chart-heading">Temperature Forecast</h2>
+        {{ chart_html | safe }}
+    </section>
     {% endif %}
 </section>
 {% endblock %}
