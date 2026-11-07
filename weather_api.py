@@ -10,8 +10,8 @@ CITY_COORDINATES = {
 
 
 def get_weather(city):
-
     latitude, longitude = CITY_COORDINATES[city]
+
     params = {
         "latitude": latitude,
         "longitude": longitude,
@@ -20,6 +20,7 @@ def get_weather(city):
         "forecast_days": 3,
         "timezone": "auto",
     }
+
     try:
         response = requests.get(
             "https://api.open-meteo.com/v1/forecast", params=params, timeout=5
@@ -29,28 +30,40 @@ def get_weather(city):
 
         if not isinstance(data, dict):
             raise ValueError("Invalid weather data")  # noqa: TRY004
-        if not isinstance(data.get("current"), dict):
+
+        current = data.get("current")
+        daily = data.get("daily")
+
+        if not isinstance(current, dict):
             raise ValueError("Invalid weather data")  # noqa: TRY004
-        if not isinstance(data.get("daily"), dict):
+
+        if not isinstance(daily, dict):
             raise ValueError("Invalid weather data")  # noqa: TRY004
-        if not data or data.get("current", {}).get("temperature_2m") is None:
+
+        if current.get("temperature_2m") is None:
             raise ValueError("Invalid weather data")
-        if not data or data.get("current", {}).get("wind_speed_10m") is None:
+
+        if current.get("wind_speed_10m") is None:
             raise ValueError("Invalid weather data")
-        if not data.get("daily", {}).get("temperature_2m_max"):
-            raise ValueError("Invalid weather data")
-        if not data.get("daily", {}).get("temperature_2m_min"):
-            raise ValueError("Invalid weather data")
-        if not data.get("daily", {}).get("precipitation_sum"):
-            raise ValueError("Invalid weather data")
-        if len(data.get("daily", {}).get("temperature_2m_max", [])) < 3:
+
+        required_daily_fields = (
+            "temperature_2m_max",
+            "temperature_2m_min",
+            "precipitation_sum",
+        )
+
+        for field in required_daily_fields:
+            values = daily.get(field)
+
+            if not values:
+                raise ValueError("Invalid weather data")
+
+            if len(values) < 3:
+                raise ValueError("Not enough forecast data")
+
+        if len(daily.get("time", [])) < 3:
             raise ValueError("Not enough forecast data")
-        if len(data.get("daily", {}).get("temperature_2m_min", [])) < 3:
-            raise ValueError("Not enough forecast data")
-        if len(data.get("daily", {}).get("precipitation_sum", [])) < 3:
-            raise ValueError("Not enough forecast data")
-        if len(data.get("daily", {}).get("time", [])) < 3:
-            raise ValueError("Not enough forecast data")
+
         return data
 
     except requests.RequestException as exc:
