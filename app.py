@@ -21,10 +21,7 @@ def index():
 def results():
     city = request.args.get("city")
 
-    if city is None:
-        return "Please select a city", 400
-
-    if not city.strip():
+    if city is None or not city.strip():
         return "Please select a city", 400
 
     if not is_valid_city(city):
